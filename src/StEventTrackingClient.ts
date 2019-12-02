@@ -20,23 +20,10 @@ export = class StEventTrackingClient {
   }
 
 
-  private waitForLoad() {
-    document.onreadystatechange = () => {
-      if (document.readyState === "complete") {
-        this.isPageLoaded = true;
-        this.startProcessingCachedEvents();
-      }
-      window.onload = async () => {
-        this.isPageLoaded = true;
-        await this.processPageLoad();
-        this.startProcessingCachedEvents();
-      };
-
-    };
-    setTimeout(() => {
-      this.isPageLoaded = true;
-      this.startProcessingCachedEvents();
-    }, 5000);
+  private async waitForLoad() {
+    this.isPageLoaded = true;
+    await this.processPageLoad();
+    this.startProcessingCachedEvents();
 
   }
 

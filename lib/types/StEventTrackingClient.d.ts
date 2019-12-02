@@ -10,7 +10,7 @@ declare const _default: {
         isPageLoaded: boolean;
         trackingServerBaseUrl: string;
         key: string;
-        waitForLoad(): void;
+        waitForLoad(): Promise<void>;
         startProcessingCachedEvents(): void;
         /***
          * request new user id from server
