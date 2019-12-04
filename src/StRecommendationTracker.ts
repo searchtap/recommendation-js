@@ -6,7 +6,7 @@ import Events from "./domain/Events";
 
 const nanoid = require('nanoid')
 
-export = class StEventTrackingClient {
+export = class StRecommendationTracker {
   private localUserId: string;
   private localUserCookieKey = "uId";
   private globalEventProperties: { [prop: string]: any };
@@ -14,7 +14,7 @@ export = class StEventTrackingClient {
   private isPageLoaded: boolean = false;
   private trackingServerBaseUrl: string = process.env.ST_TRACKING_SERVER;
 
-  constructor(private key: string) {
+  constructor(private apiKey: string, private trackAutoEvent: boolean = true) {
     this.getUserId();
     this.waitForLoad();
   }
@@ -22,7 +22,8 @@ export = class StEventTrackingClient {
 
   private async waitForLoad() {
     this.isPageLoaded = true;
-    await this.processPageLoad();
+    if (this.trackAutoEvent)
+      await this.processPageLoad();
     this.startProcessingCachedEvents();
 
   }
@@ -88,7 +89,7 @@ export = class StEventTrackingClient {
    * @param properties
    */
   public setGlobalProps(properties: { [prop: string]: any }) {
-    if (!JSONHelper.isValidJson(JSON.stringify(properties)))
+    if (!JSONHelper.isValidJson(properties))
       logger.error("Invalid data provided for global Event properties");
     this.globalEventProperties = properties;
   }
@@ -98,7 +99,7 @@ export = class StEventTrackingClient {
    * @param eventName
    * @param eventData
    */
-  public async sendEvent(eventName: string, eventData: { [prop: string]: any }) {
+  public async track(eventName: string, eventData: { [prop: string]: any }) {
     let analyticsData: IAnalyticsData = {
       eventName: eventName,
       eventData: eventData,
@@ -126,7 +127,7 @@ export = class StEventTrackingClient {
   }
 
   private processPageLoad() {
-    return this.sendEvent(Events.pageLoad, {
+    return this.track(Events.pageLoad, {
       title: document.title,
       href: window.location.href,
       origin: window.location.origin,
@@ -136,7 +137,7 @@ export = class StEventTrackingClient {
 
   private async sendEventToServer(event: IAnalyticsData) {
     const img = document.createElement('img');
-    img.src = `${this.trackingServerBaseUrl}/e?key=${this.key}&${this.localUserCookieKey}=${this.localUserId}&data=${encodeURIComponent(JSON.stringify(event))}`;
+    img.src = `${this.trackingServerBaseUrl}/e?key=${this.apiKey}&${this.localUserCookieKey}=${this.localUserId}&data=${encodeURIComponent(JSON.stringify(event))}`;
     img.style.display = 'none';
     document.body.appendChild(img);
   }

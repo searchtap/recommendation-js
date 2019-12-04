@@ -1,6 +1,6 @@
 import { IAnalyticsData } from "./domain/IAnalyticsData";
 declare const _default: {
-    new (key: string): {
+    new (apiKey: string, trackAutoEvent?: boolean): {
         localUserId: string;
         localUserCookieKey: string;
         globalEventProperties: {
@@ -9,7 +9,8 @@ declare const _default: {
         cachedEvents: IAnalyticsData[];
         isPageLoaded: boolean;
         trackingServerBaseUrl: string;
-        key: string;
+        apiKey: string;
+        trackAutoEvent: boolean;
         waitForLoad(): Promise<void>;
         startProcessingCachedEvents(): void;
         /***
@@ -38,7 +39,7 @@ declare const _default: {
          * @param eventName
          * @param eventData
          */
-        sendEvent(eventName: string, eventData: {
+        track(eventName: string, eventData: {
             [prop: string]: any;
         }): Promise<void>;
         canSendEventToServer(): boolean;

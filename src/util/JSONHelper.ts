@@ -1,11 +1,7 @@
 export class JSONHelper {
-  static isValidJson(jsonStr) {
-    if (typeof jsonStr !== "string") {
-      return false;
-    }
+  static isValidJson(json) {
     try {
-      JSON.parse(jsonStr);
-      return true;
+      return json.constructor === Object;
     }
     catch (error) {
       return false;

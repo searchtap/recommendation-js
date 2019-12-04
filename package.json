@@ -2,7 +2,7 @@
   "name": "@searchtap/analytics-js",
   "version": "1.0.6",
   "main": "lib/index.min.js",
-  "types": "lib/types/StEventTrackingClient.d.ts",
+  "types": "lib/types/StRecommendationTracker.d.ts",
   "scripts": {
     "build": "rm -rf lib && NODE_ENV=production ./node_modules/.bin/webpack --mode=production && tsc --emitDeclarationOnly",
     "build-dev": "rm -rf lib && NODE_ENV=default ./node_modules/.bin/webpack && tsc --emitDeclarationOnly",
@@ -22,7 +22,6 @@
     "all": true
   },
   "dependencies": {
-    "axios": "^0.18.0",
     "browser-cookies": "^1.2.0",
     "nanoid": "^2.1.7"
   },
