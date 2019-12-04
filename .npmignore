@@ -65,3 +65,16 @@ typings/
 .nyc_output
 
 *.html
+
+webpack.config.js
+
+src/**/*
+tests/**/*
+
+yarn.lock
+
+tsconfig.json
+
+.env.production
+
+.env.default
