@@ -1,8 +1,8 @@
 import * as cookies from "browser-cookies";
 import {JSONHelper} from "./util/JSONHelper";
-import {IAnalyticsData} from "./domain/IAnalyticsData";
+import {ITrackingData} from "./domain/ITrackingData";
 import * as logger from "./util/Logger";
-import Events from "./domain/Events";
+import EventTypes from "./domain/EventTypes";
 
 const nanoid = require('nanoid')
 
@@ -10,7 +10,7 @@ export = class StRecommendationTracker {
   private localUserId: string;
   private localUserCookieKey = "uId";
   private globalEventProperties: { [prop: string]: any };
-  private cachedEvents: IAnalyticsData[] = [];
+  private cachedEvents: ITrackingData[] = [];
   private isPageLoaded: boolean = false;
   private trackingServerBaseUrl: string = process.env.ST_TRACKING_SERVER;
 
@@ -100,17 +100,17 @@ export = class StRecommendationTracker {
    * @param eventData
    */
   public async track(eventName: string, eventData: { [prop: string]: any }) {
-    let analyticsData: IAnalyticsData = {
+    let trackingData: ITrackingData = {
       eventName: eventName,
       eventData: eventData,
       timeStamp: new Date().valueOf()
     };
     //give preference to event properties upon global event properties
-    analyticsData.eventData = Object.assign({}, this.globalEventProperties, analyticsData.eventData);
+    trackingData.eventData = Object.assign({}, this.globalEventProperties, trackingData.eventData);
     if (this.canSendEventToServer())
-      await this.sendEventToServer(analyticsData);
+      await this.sendEventToServer(trackingData);
     else {
-      this.cachedEvents.push(analyticsData);
+      this.cachedEvents.push(trackingData);
     }
 
   }
@@ -127,7 +127,7 @@ export = class StRecommendationTracker {
   }
 
   private processPageLoad() {
-    return this.track(Events.pageLoad, {
+    return this.track(EventTypes.pageLoad, {
       title: document.title,
       href: window.location.href,
       origin: window.location.origin,
@@ -135,7 +135,7 @@ export = class StRecommendationTracker {
     });
   }
 
-  private async sendEventToServer(event: IAnalyticsData) {
+  private async sendEventToServer(event: ITrackingData) {
     const img = document.createElement('img');
     img.src = `${this.trackingServerBaseUrl}/e?key=${this.apiKey}&${this.localUserCookieKey}=${this.localUserId}&data=${encodeURIComponent(JSON.stringify(event))}`;
     img.style.display = 'none';

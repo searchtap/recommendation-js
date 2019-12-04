@@ -1,4 +1,4 @@
-import { IAnalyticsData } from "./domain/IAnalyticsData";
+import { ITrackingData } from "./domain/ITrackingData";
 declare const _default: {
     new (apiKey: string, trackAutoEvent?: boolean): {
         localUserId: string;
@@ -6,7 +6,7 @@ declare const _default: {
         globalEventProperties: {
             [prop: string]: any;
         };
-        cachedEvents: IAnalyticsData[];
+        cachedEvents: ITrackingData[];
         isPageLoaded: boolean;
         trackingServerBaseUrl: string;
         apiKey: string;
@@ -45,7 +45,7 @@ declare const _default: {
         canSendEventToServer(): boolean;
         processCachedEvents(): Promise<void>;
         processPageLoad(): Promise<void>;
-        sendEventToServer(event: IAnalyticsData): Promise<void>;
+        sendEventToServer(event: ITrackingData): Promise<void>;
     };
 };
 export = _default;
