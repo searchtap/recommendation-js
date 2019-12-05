@@ -25,12 +25,12 @@ node-build: &node-build
     - checkout
     - restore_cache: *restore_cache_settings
     - run: yarn install
-    - run: yarn test
+#    - run: yarn test
     - save_cache: *save_cache_settings
     - run: mkdir -p shared
     - run: rm -rf ./lib
     - run: yarn build
-    - run: cp -r lib config package.json yarn.lock .circleci shared/
+    - run: cp -r lib config package.json yarn.lock .circleci webpack.config.js .env.production .env.default shared/
     - store_artifacts:
         path: shared
 
@@ -60,8 +60,8 @@ jobs:
           command: |
             mkdir ~/.ssh && touch ~/.ssh/known_hosts
             ssh-keyscan github.com >> ~/.ssh/known_hosts
-            git clone --branch $CIRCLE_BRANCH git@github.com:naveensky/st-node-commons.git
-            cd st-node-commons
+            git clone --branch $CIRCLE_BRANCH git@github.com:searchtap/recommendation-js.git
+            cd recommendation-js
             rm -rf ./lib
             cp -r ../lib ./
             git config --global user.name "Circle-Ci"
@@ -78,5 +78,5 @@ workflows:
             - build
           filters:
             branches:
-              only: release
+              only: deploy-ci
 
