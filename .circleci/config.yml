@@ -29,7 +29,7 @@ node-build: &node-build
     - save_cache: *save_cache_settings
     - run: mkdir -p shared
     - run: rm -rf ./lib
-    - run: yarn build-dev
+    - run: yarn build
     - run: cp -r lib package.json yarn.lock .circleci webpack.config.js .env.production .env.default shared/
     - store_artifacts:
         path: shared
@@ -66,10 +66,13 @@ jobs:
             cp -r ../lib ./
             npm version  --no-git-tag-version patch
             git config --global user.name "Circle-Ci"
-            git diff --numstat | wc -l
             git add -A && git commit -m ${CIRCLE_SHA1}"-[skip ci]"
             git push
 
+      - run:
+          name: Npm Publish
+          command: |
+            npm publish --access public
 
 workflows:
   version: 2
