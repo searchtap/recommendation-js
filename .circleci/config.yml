@@ -64,6 +64,7 @@ jobs:
             cd recommendation-js
             rm -rf ./lib
             cp -r ../lib ./
+            npm version  --no-git-tag-version patch
             git config --global user.name "Circle-Ci"
             git diff --numstat | wc -l
             git add -A && git commit -m ${CIRCLE_SHA1}"-[skip ci]"
