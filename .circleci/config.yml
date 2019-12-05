@@ -65,8 +65,10 @@ jobs:
             rm -rf ./lib
             cp -r ../lib ./
             git config --global user.name "Circle-Ci"
+            git diff --numstat | wc -l
             git add -A && git commit -m ${CIRCLE_SHA1}"-[skip ci]"
             git push
+
 
 workflows:
   version: 2
