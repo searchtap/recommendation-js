@@ -30,7 +30,7 @@ node-build: &node-build
     - run: mkdir -p shared
     - run: rm -rf ./lib
     - run: yarn build
-    - run: cp -r lib config package.json yarn.lock .circleci webpack.config.js .env.production .env.default shared/
+    - run: cp -r lib package.json yarn.lock .circleci webpack.config.js .env.production .env.default shared/
     - store_artifacts:
         path: shared
 
