@@ -78,5 +78,5 @@ workflows:
             - build
           filters:
             branches:
-              only: deploy-ci
+              only: deploy_ci
 
