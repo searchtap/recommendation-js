@@ -72,7 +72,9 @@ jobs:
       - run:
           name: Npm Publish
           command: |
-            npm publish --access public
+            cd recommendation-js
+            ls
+#            npm publish --access public
 
 workflows:
   version: 2
