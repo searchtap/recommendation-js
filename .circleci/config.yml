@@ -1,0 +1,82 @@
+version: 2
+
+restore_cache_settings: &restore_cache_settings
+  key: node-deps-{{ checksum "package.json" }}
+
+save_cache_settings: &save_cache_settings
+  key: node-deps-{{ checksum "package.json" }}
+  paths:
+    - node_modules
+
+node-build: &node-build
+  docker:
+    - image: circleci/node:11
+
+  steps:
+    - run: sudo npm install -g typescript
+    - checkout
+    - restore_cache: *restore_cache_settings
+    - run: yarn install
+#    - run: yarn test
+    - save_cache: *save_cache_settings
+    - run: mkdir -p shared
+    - run: rm -rf ./lib
+    - run: yarn build
+    - run: cp -r lib package.json yarn.lock .circleci webpack.config.js .env.production .env.default shared/
+    - store_artifacts:
+        path: shared
+
+    - persist_to_workspace:
+        root: shared
+        paths:
+          - ./
+
+
+
+jobs:
+  build: *node-build
+
+  deploy:
+    docker:
+      - image: circleci/node:11
+
+    steps:
+
+      - attach_workspace:
+          at: shared
+
+      - run: cp -r shared/. .
+
+      - run:
+          name: Git push
+          command: |
+            mkdir ~/.ssh && touch ~/.ssh/known_hosts
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+            git clone --branch $CIRCLE_BRANCH git@github.com:searchtap/recommendation-js.git
+            cd recommendation-js
+            rm -rf ./lib
+            cp -r ../lib ./
+            npm version  --no-git-tag-version patch
+            git config --global user.name "Circle-Ci"
+            git add -A && git commit -m ${CIRCLE_SHA1}"-[skip ci]"
+            git push
+
+      - run:
+          name: Npm Publish
+          command: |
+            cd recommendation-js
+            ls
+            npm publish --access public
+
+workflows:
+  version: 2
+  ci:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: release
+
