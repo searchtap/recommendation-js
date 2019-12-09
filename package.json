@@ -1,5 +1,5 @@
 {
-  "name": "@searchtap/recommendation-js",
+  "name": "@searchtap/recommendation-client",
   "version": "0.0.4",
   "main": "lib/index.min.js",
   "types": "lib/types/StRecommendationTracker.d.ts",
