@@ -1,4 +1,7 @@
 import { ITrackingData } from "./domain/ITrackingData";
+import { AxiosInstance } from "axios";
+import { IItemData } from "./domain/IItemData";
+import { IUserData } from "./domain/IUserData";
 declare const _default: {
     new (apiKey: string, trackAutoEvent?: boolean): {
         localUserId: string;
@@ -9,6 +12,7 @@ declare const _default: {
         cachedEvents: ITrackingData[];
         isPageLoaded: boolean;
         trackingServerBaseUrl: string;
+        trackingInstance: AxiosInstance;
         apiKey: string;
         trackAutoEvent: boolean;
         waitForLoad(): Promise<void>;
@@ -46,6 +50,9 @@ declare const _default: {
         processCachedEvents(): Promise<void>;
         processPageLoad(): Promise<void>;
         sendEventToServer(event: ITrackingData): Promise<void>;
+        sendItems(items: IItemData[]): Promise<void>;
+        sendUsers(items: IUserData[]): Promise<void>;
+        sendEvents(items: ITrackingData[]): Promise<void>;
     };
 };
 export = _default;

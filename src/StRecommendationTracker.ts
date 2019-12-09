@@ -3,6 +3,9 @@ import {JSONHelper} from "./util/JSONHelper";
 import {ITrackingData} from "./domain/ITrackingData";
 import * as logger from "./util/Logger";
 import EventTypes from "./domain/EventTypes";
+import Axios, {AxiosInstance} from "axios";
+import {IItemData} from "./domain/IItemData";
+import {IUserData} from "./domain/IUserData";
 
 const nanoid = require('nanoid')
 
@@ -13,8 +16,12 @@ export = class StRecommendationTracker {
   private cachedEvents: ITrackingData[] = [];
   private isPageLoaded: boolean = false;
   private trackingServerBaseUrl: string = process.env.ST_TRACKING_SERVER;
+  private trackingInstance: AxiosInstance;
 
   constructor(private apiKey: string, private trackAutoEvent: boolean = true) {
+    this.trackingInstance = Axios.create({
+      baseURL: this.trackingServerBaseUrl
+    });
     this.getUserId();
     this.waitForLoad();
   }
@@ -142,4 +149,30 @@ export = class StRecommendationTracker {
     document.body.appendChild(img);
   }
 
+  async sendItems(items: IItemData[]) {
+    await this.trackingInstance.post("/items", items, {
+      params: {
+        key: this.apiKey
+      }
+    }).then(x => true)
+      .catch(x => false);
+  }
+
+  async sendUsers(items: IUserData[]) {
+    await this.trackingInstance.post("/users", items, {
+      params: {
+        key: this.apiKey
+      }
+    }).then(x => true)
+      .catch(x => false);
+  }
+
+  async sendEvents(items: ITrackingData[]) {
+    await this.trackingInstance.post("/e", items, {
+      params: {
+        key: this.apiKey
+      }
+    }).then(x => true)
+      .catch(x => false);
+  }
 }
