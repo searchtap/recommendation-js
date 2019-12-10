@@ -106,11 +106,13 @@ export = class StRecommendationTracker {
    * @param eventName
    * @param eventData
    */
-  public async track(eventName: string, eventData: { [prop: string]: any }) {
+  public async track(eventName: string, eventData: { [prop: string]: any }, recommendationId?: string, recommendationGroup?: string) {
     let trackingData: ITrackingData = {
       eventName: eventName,
       meta: eventData,
-      timeStamp: new Date().valueOf()
+      timeStamp: new Date().valueOf(),
+      recommendationId: recommendationId,
+      recommendationGroup: recommendationGroup
     };
     //give preference to event properties upon global event properties
     trackingData.meta = Object.assign({}, this.globalEventProperties, trackingData.meta);

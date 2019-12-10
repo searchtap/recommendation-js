@@ -45,7 +45,7 @@ declare const _default: {
          */
         track(eventName: string, eventData: {
             [prop: string]: any;
-        }): Promise<void>;
+        }, recommendationId?: string, recommendationGroup?: string): Promise<void>;
         canSendEventToServer(): boolean;
         processCachedEvents(): Promise<void>;
         processPageLoad(): Promise<void>;

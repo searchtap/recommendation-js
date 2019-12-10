@@ -3,6 +3,6 @@
  */
 export interface IItemData {
   itemId: string;
-  title:string
-  meta?: any;
+  title: string
+  meta: any;
 }
