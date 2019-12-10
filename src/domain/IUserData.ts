@@ -3,5 +3,5 @@
  */
 export interface IUserData {
   userId: string;
-  meta?: any;
+  meta: any;
 }

@@ -4,5 +4,5 @@
 export interface IItemData {
     itemId: string;
     title: string;
-    meta?: any;
+    meta: any;
 }

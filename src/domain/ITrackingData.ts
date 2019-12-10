@@ -3,8 +3,9 @@
  */
 export interface ITrackingData {
   eventName: string;
-  eventData: any;
+  meta: any;
   timeStamp: number;
-  meta?: any;
+  recommendationId: string;
+  recommendationGroup: string;
   userId?: string;
 }
