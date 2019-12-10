@@ -109,11 +109,11 @@ export = class StRecommendationTracker {
   public async track(eventName: string, eventData: { [prop: string]: any }) {
     let trackingData: ITrackingData = {
       eventName: eventName,
-      eventData: eventData,
+      meta: eventData,
       timeStamp: new Date().valueOf()
     };
     //give preference to event properties upon global event properties
-    trackingData.eventData = Object.assign({}, this.globalEventProperties, trackingData.eventData);
+    trackingData.meta = Object.assign({}, this.globalEventProperties, trackingData.meta);
     if (this.canSendEventToServer())
       await this.sendEventToServer(trackingData);
     else {
