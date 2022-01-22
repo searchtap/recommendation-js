@@ -28,7 +28,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "browser-cookies": "^1.2.0",
-    "nanoid": "^2.1.7"
+    "nanoid": "^3.1.31"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
